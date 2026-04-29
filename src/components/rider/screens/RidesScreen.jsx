@@ -164,8 +164,14 @@ export default function RidesScreen({ route, onBook, onBack }) {
       </div>
 
       <div style={{ flex:1, padding:24 }}>
-        <MapView label="Your route" showRoute />
+        <MapView label="Your route" showRoute={!!route.drop} destination={route.drop} distance={distanceKm} eta={selEtaMin} />
       </div>
     </div>
   );
 }
+
+//  showRoute = true,
+//   showDriver ,
+//   destination,
+//   distance,
+//   eta,
