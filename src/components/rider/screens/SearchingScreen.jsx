@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useCountdown, useFareStep } from "../components/hooks";
 import MapView from "../components/Map";
 import { Toggle, ProgressBar, Modal, FareStepper } from "../components/primitives";
+
 export default function SearchingScreen({ booking, onDriverFound, onCancel }) {
   const { count, reset, expired } = useCountdown(60);
   const [showTout, setShowTout]   = useState(false);
@@ -64,8 +65,6 @@ export default function SearchingScreen({ booking, onDriverFound, onCancel }) {
             </div>
           </div>
 
-          <FareStepper fare={fs.fare} inc={fs.inc} dec={fs.dec} isMin={fs.isMin} isMax={fs.isMax} recommended={booking.fare} label="Adjust Fare" />
-          <Toggle checked={autoAcc} onChange={setAutoAcc} label="Auto-Accept Nearest Driver" sublabel="Automatically accept first available" />
           {autoAcc && <div style={{ padding:"10px 14px", background:"rgba(212,114,138,0.06)", border:"1px solid rgba(212,114,138,0.18)", borderRadius:12, fontSize:12, color:"#9D5A6C" }}>✓ Will auto-accept in ~30 seconds if driver is found</div>}
         </div>
 

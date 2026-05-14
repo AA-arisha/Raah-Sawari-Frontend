@@ -8,7 +8,7 @@ export default function HomeScreen({ onSearch }) {
   return (
     <div style={{ background:"#fdf2f5" }}>
       {/* HERO */}
-      <section style={{ position:"relative", overflow:"hidden", height:590 }}>
+      <section style={{ position:"relative", overflow:"hidden", height:532 }}>
         <div style={{ position:"absolute", inset:0, backgroundImage:"url('https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=1200&q=80')", backgroundSize:"cover", backgroundPosition:"center 30%", animation:"heroZoom 8s ease-out forwards", filter:"brightness(0.72) saturate(1.1)" }} />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(30,8,18,0.15) 0%, rgba(30,8,18,0.04) 30%, rgba(30,8,18,0.54) 65%, rgba(20,5,12,0.94) 100%)" }} />
 

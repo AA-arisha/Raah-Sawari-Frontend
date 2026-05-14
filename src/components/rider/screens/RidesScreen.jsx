@@ -21,7 +21,7 @@ export default function RidesScreen({ route, onBook, onBack }) {
   const [apiData,   setApiData]   = useState(null);   // full response from /api/ride/estimate
   const [apiLoading, setApiLoading] = useState(true);
   const [apiError,  setApiError]  = useState(null);
-
+  
   // Fetch estimate from backend once on mount (or when route coords change)
   useEffect(() => {
     if (!route?.pickup || !route?.drop) return;
@@ -40,6 +40,7 @@ export default function RidesScreen({ route, onBook, onBack }) {
   // Helper: get backend vehicle data for the currently selected ride
   const getVehicleData = useCallback((rideId) => {
     if (!apiData?.vehicles) return null;
+
     const backendKey = VEHICLE_MAP[rideId];
     return apiData.vehicles.find(v => v.vehicle === backendKey) ?? null;
   }, [apiData]);
@@ -53,9 +54,11 @@ export default function RidesScreen({ route, onBook, onBack }) {
   const maxPrice     = selVehicle?.max_fare         ?? Math.round(basePrice * 1.5);
 
   const fareStep = useFareStep(basePrice, minPrice, maxPrice, 10);
-
+  
   // Reset fare stepper whenever selected vehicle or API data changes
-  useEffect(() => { fareStep.reset(); }, [sel, basePrice]);
+  useEffect(() => {
+    fareStep.reset(basePrice);          // ← pass basePrice so reset isn't stale
+  }, [sel, apiData]);  
 
   // Distance & ETA — from API or fallback
   const distanceKm  = apiData?.distance_km ?? null;
@@ -132,7 +135,7 @@ export default function RidesScreen({ route, onBook, onBack }) {
                   </div>
                   <div style={{ textAlign:"right", flexShrink:0 }}>
                     <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, fontWeight:700, color:"#3D1F2A" }}>
-                      {apiLoading ? "…" : `Rs ${displayFare}`}
+                      {apiLoading ? "…" : `Rs ${rideFare}`}
                     </div>
                   </div>
                 </div>
@@ -140,15 +143,6 @@ export default function RidesScreen({ route, onBook, onBack }) {
             );
           })}
 
-          <FareStepper
-            fare={fareStep.fare}
-            inc={fareStep.inc}
-            dec={fareStep.dec}
-            isMin={fareStep.isMin}
-            isMax={fareStep.isMax}
-            recommended={basePrice}
-            label="Offer Fare"
-          />
         </div>
 
         <div style={{ padding:"18px 24px", borderTop:"1.5px solid rgba(212,114,138,0.1)" }}>
@@ -169,9 +163,3 @@ export default function RidesScreen({ route, onBook, onBack }) {
     </div>
   );
 }
-
-//  showRoute = true,
-//   showDriver ,
-//   destination,
-//   distance,
-//   eta,

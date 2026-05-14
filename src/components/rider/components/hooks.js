@@ -4,7 +4,7 @@ import { VEHICLE_MAP } from "./vehicleMap";
 
 
 
-function useCountdown(initial) {
+export function useCountdown(initial) {
   const [count, setCount]     = useState(initial);
   const [running, setRunning] = useState(true);
   useEffect(() => {
@@ -17,12 +17,25 @@ function useCountdown(initial) {
   return { count, reset, stop, expired: count <= 0 };
 }
 
-function useFareStep(base, min, max, step = 10) {
-  const [fare, setFare] = useState(base);
-  const inc   = () => setFare(f => Math.min(f + step, max));
-  const dec   = () => setFare(f => Math.max(f - step, min));
-  const reset = () => setFare(base);
-  return { fare, inc, dec, reset, isMin: fare <= min, isMax: fare >= max };
+// hooks.js (or wherever useFareStep lives)
+export function useFareStep(initial, min, max, step) {
+  const [fare, setFare] = useState(initial);
+
+  const reset = useCallback((newBase) => {
+    setFare(newBase ?? initial);
+  }, [initial]);
+
+  const inc = useCallback(() => setFare(f => Math.min(f + step, max)), [step, max]);
+  const dec = useCallback(() => setFare(f => Math.max(f - step, min)), [step, min]);
+
+  return {
+    fare,
+    inc,
+    dec,
+    reset,
+    isMin: fare <= min,
+    isMax: fare >= max,
+  };
 }
 
 // import { useState, useEffect, useCallback } from "react";
@@ -74,4 +87,3 @@ export function useRideEstimate(route) {
   };
 }
 
-export { useCountdown, useFareStep };

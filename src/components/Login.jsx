@@ -50,7 +50,7 @@ export default function Login({ onSwitch }) {
       const result = await loginUser(form);
       console.log(result)
       const { token, user } = result.data;
-      console.log(token , user);
+      // console.log(token , user);
       localStorage.setItem("token", token);
       localStorage.setItem("role", user.role);
       
@@ -95,11 +95,6 @@ export default function Login({ onSwitch }) {
         </p>
       )}
 
-      <div style={{ textAlign: "right", marginBottom: "20px", marginTop: "-4px" }}>
-        <span style={{ fontSize: "12px", color: colors.mauve, cursor: "pointer", fontFamily: "DM Sans, sans-serif", fontWeight: "500" }}>
-          Forgot password?
-        </span>
-      </div>
 
       <Button onClick={handleLogin} disabled={loading}>
         {loading ? "Signing in…" : "Sign In"}
